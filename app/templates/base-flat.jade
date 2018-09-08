@@ -146,6 +146,8 @@ mixin accountLinks
                   a(href="/play/ladder", data-i18n="game_menu.multiplayer_tab")
                 li
                   a(href="https://github.com/codecombat/codecombat", data-i18n="nav.open_source")
+                li
+                  a(href="/parents", data-i18n="nav.parent")
             .col-sm-3
               ul.list-unstyled
                 li
@@ -153,7 +155,7 @@ mixin accountLinks
                 if !me.isStudent()
                   li
                     a.contact-modal(tabindex=-1, data-i18n="nav.contact")
-                if !me.onChinaInfra()
+                if me.useSocialSignOn()
                   li
                     a(href="https://www.facebook.com/codecombat", data-i18n="nav.facebook")
                   li

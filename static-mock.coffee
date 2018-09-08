@@ -17,7 +17,8 @@ exports.me =
   isTeacher: () -> false
   isAdmin: () -> false
   level: () -> 1
-  onChinaInfra: -> false
+  useDexecure: -> true
+  useSocialSignOn: -> true
   gems: () -> 0
   getPhotoURL: () -> ''
   displayName: () -> ''

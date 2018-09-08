@@ -25,7 +25,7 @@ Courses = require 'collections/Courses'
 CourseInstance = require 'models/CourseInstance'
 CourseInstances = require 'collections/CourseInstances'
 Prepaids = require 'collections/Prepaids'
-window.saveAs ?= require 'node_modules/file-saver/FileSaver.js' # `window.` is necessary for spec to spy on it
+window.saveAs ?= require 'file-saver/FileSaver.js' # `window.` is necessary for spec to spy on it
 window.saveAs = window.saveAs.saveAs if window.saveAs.saveAs  # Module format changed with webpack?
 TeacherClassAssessmentsTable = require('./TeacherClassAssessmentsTable').default
 PieChart = require('core/components/PieComponent').default
@@ -62,7 +62,7 @@ module.exports = class TeacherClassView extends RootView
 
   getInitialState: ->
     {
-      sortAttribute: 'name'
+      sortValue: 'name'
       sortDirection: 1
       activeTab: '#' + (Backbone.history.getHash() or 'students-tab')
       students: new Users()
@@ -141,10 +141,10 @@ module.exports = class TeacherClassView extends RootView
 
     @levels = new Levels()
     @supermodel.trackRequest @levels.fetchForClassroom(classroomID, {data: {project: 'original,name,primaryConcepts,concepts,primerLanguage,practice,shareable,i18n,assessment,assessmentPlacement,slug,goals'}})
-
+    me.getClientCreatorPermissions()?.then(() => @render?())
     @attachMediatorEvents()
     window.tracker?.trackEvent 'Teachers Class Loaded', category: 'Teachers', classroomID: @classroom.id, ['Mixpanel']
-
+  
   fetchStudents: ->
     Promise.all(@students.fetchForClassroom(@classroom, {removeDeleted: true, data: {project: 'firstName,lastName,name,email,coursePrepaid,coursePrepaidID,deleted'}}))
     .then =>
@@ -276,7 +276,7 @@ module.exports = class TeacherClassView extends RootView
         html: true
       }).delegate '.tooltip', 'mousemove', ->
         dot.tooltip('hide')
-  
+
   allStatsLoaded: ->
     @classroom?.loaded and @classroom?.get('members')?.length is 0 or (@students?.loaded and @classroom?.sessions?.loaded)
 

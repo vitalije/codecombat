@@ -51,6 +51,12 @@ module.exports = (env) => {
       rules: [
         { test: /\.vue$/, use: [{ loader: 'vue-loader' }] },
         { test: /vendor\/scripts\/async.js/, use: [ { loader: 'imports-loader?root=>window' } ] },
+        { test: /\.js$/,
+          exclude: /(node_modules|bower_components|vendor)/,
+          use: [{
+            loader: 'babel-loader',
+          }]
+        },
         { test: /\.coffee$/, use: [
           { loader: 'coffee-loader' },
         ] },
@@ -94,7 +100,7 @@ module.exports = (env) => {
       ],
       extensions: ['.web.coffee', '.web.js', '.coffee', '.js', '.jade', '.sass', '.vue'],
       alias: { // Replace Backbone's underscore with lodash
-        'underscore': 'node_modules/lodash'
+        'underscore': 'lodash'
       }
     },
     node: {
@@ -134,7 +140,7 @@ module.exports = (env) => {
           from: 'app/assets',
           to: '.'
         },{ // Ace
-          context: 'node_modules/ace-builds/src-min-noconflict',
+          context: 'bower_components/ace-builds/src-min-noconflict',
           from: '**/*',
           to: 'javascripts/ace'
         },{ // Esper

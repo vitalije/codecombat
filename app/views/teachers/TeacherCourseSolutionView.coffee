@@ -40,6 +40,7 @@ module.exports = class TeacherCourseSolutionView extends RootView
       @prepaids = new Prepaids()
       @supermodel.trackRequest @prepaids.fetchMineAndShared()
     @paidTeacher = me.isAdmin() or me.isTeacher() and /@codeninjas.com$/i.test me.get('email')
+    me.getClientCreatorPermissions()?.then(() => @render?())
     super(options)
 
   camelCaseLanguage: (language) ->
@@ -89,6 +90,9 @@ module.exports = class TeacherCourseSolutionView extends RootView
         assessment: level.get('assessment') ? false
       })
     @levelNumberMap = utils.createLevelNumberMap(levels)
+    if @course?.id == utils.courseIDs.WEB_DEVELOPMENT_2
+      # Filter out non numbered levels.
+      @levels.models = @levels.models.filter((l) => l.get('original') of @levelNumberMap)
     @render?()
 
   afterRender: ->

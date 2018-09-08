@@ -135,6 +135,7 @@ module.exports = class CocoRouter extends Backbone.Router
     'editor/course/:courseID': go('editor/course/CourseEditView')
 
     'etc': redirect('/teachers/demo')
+    'demo': redirect('/teachers/demo')
 
     'file/*path': 'routeToServer'
 
@@ -162,6 +163,8 @@ module.exports = class CocoRouter extends Backbone.Router
     'logout': 'logout'
 
     'minigames/conditionals': go('minigames/ConditionalMinigameView')
+
+    'parents': go('ParentsView')
 
     'paypal/subscribe-callback': go('play/CampaignView')
     'paypal/cancel-callback': go('account/SubscriptionView')
@@ -334,7 +337,7 @@ module.exports = class CocoRouter extends Backbone.Router
     ), 10
 
   initializeSocialMediaServices: ->
-    return if application.testing or application.demoing or me.onChinaInfra()
+    return if application.testing or application.demoing or not me.useSocialSignOn()
     application.facebookHandler.loadAPI()
     application.gplusHandler.loadAPI()
     require('core/services/twitter')()
